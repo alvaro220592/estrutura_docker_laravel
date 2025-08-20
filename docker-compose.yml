@@ -1,47 +1,50 @@
 services:
   # aplicação
-  meu_projeto_app:
-    user: "www-data"
+  estudantes_app:
     build:
       context: ./php
-    container_name: meu_projeto_app
+      args:
+        UID: ${UID}
+        GID: ${GID}
+    container_name: estudantes_app
     working_dir: /var/www/html
+    user: "${UID}:${GID}"
     volumes:
       - ./src:/var/www/html
     networks:
-      - meu_projeto_network
+      - estudantes_network
 
   # servidor web
-  meu_projeto_nginx:
+  estudantes_nginx:
     image: nginx:alpine
-    container_name: meu_projeto_nginx
+    container_name: estudantes_nginx
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
       - ./src:/var/www/html:ro # "ro" é read only
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - meu_projeto_app
+      - estudantes_app
     networks:
-      - meu_projeto_network
+      - estudantes_network
 
   # banco de dados
-  meu_projeto_db:
+  estudantes_db:
     image: mysql:8.0
-    container_name: meu_projeto_db
+    container_name: estudantes_db
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
-      - meu_projeto_db_data:/var/lib/mysql
+      - estudantes_db_data:/var/lib/mysql
     networks:
-      - meu_projeto_network
+      - estudantes_network
 
 volumes:
-  meu_projeto_db_data:
+  estudantes_db_data:
 
 networks:
-  meu_projeto_network:
+  estudantes_network:
     driver: bridge
