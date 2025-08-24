@@ -2,18 +2,17 @@ estrutura esperada para criar manualmente:
 
 meu_projeto/
 │── docker-compose.yml
-│── src/                    # código Laravel
+│── src/                    # pasta vazia para receber o código Laravel
 │── php/
 │   └── Dockerfile
 │── nginx/                  # configs do Nginx
 │   └── default.conf
-|── .env                    # para dados do banco de dados
+|── .env                    # para dados do banco de dados e outras coisas que você quiser
 
+para gerenciar o projeto laravel quando estiver criado:
+docker compose exec meu_projeto_app <comando desejado>
 
-para gerenciar o projeto laravel:
-docker compose exec meu_projeto_app <comando>
-
-consulta com nome do container:
+consulta amigável com nome do container:
 docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}"
 
 Configuração do vite para docker (vite.config.js):
@@ -27,6 +26,6 @@ server: {
     }
 }
 
-no .env do laravel:
+.env do laravel (src/.env):
 APP_URL=http://<ip do seu host>:<porta do container php>
-DB_ROOT_PASSWORD=senha do root
+DB_ROOT_PASSWORD=senha do root definida no .env raiz
