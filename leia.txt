@@ -11,7 +11,22 @@ meu_projeto/
 
 
 para gerenciar o projeto laravel:
-docker compose run --rm meu_projeto_app <comando>
+docker compose exec meu_projeto_app <comando>
 
 consulta com nome do container:
 docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}"
+
+Configuração do vite para docker (vite.config.js):
+server: {
+    host: "0.0.0.0",
+    port: 5173, // porta padrão do vite
+    strictPort: true,
+    hmr: {
+        host: "ip.do.seu.host", // ou nome do host, mas sempre sem a porta
+        port: 5173 // porta padrão do vite
+    }
+}
+
+no .env do laravel:
+APP_URL=http://<ip do seu host>:<porta do container php>
+DB_ROOT_PASSWORD=senha do root

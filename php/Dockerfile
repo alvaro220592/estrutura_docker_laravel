@@ -6,7 +6,7 @@ ARG GID=1000
 
 # Instalar dependências do sistema
 RUN apk add --no-cache \
-    bash git unzip curl nodejs npm \
+    bash git unzip curl \
     libzip-dev sqlite sqlite-dev oniguruma-dev sudo
 
 # Instalar extensões do PHP
@@ -22,16 +22,8 @@ RUN addgroup -g $GID appuser \
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
 
-# Criar pasta de cache do npm com permissão correta
-RUN mkdir -p /var/www/.npm && chown -R appuser:appuser /var/www/.npm
-
-# Configurar PATH e cache do npm
-ENV PATH="/usr/local/bin:$PATH"
-ENV NPM_CONFIG_CACHE=/var/www/.npm
-
 # Definir diretório de trabalho
 WORKDIR /var/www/html
 
 # Mudar para o usuário criado
 USER appuser
-
